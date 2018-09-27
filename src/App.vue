@@ -5,7 +5,8 @@
       <Loading/>
     </div>
     <div v-else>
-      <HomePage/>
+      <Navbar/>
+      <Body />
     </div>
     
   </div>
@@ -13,12 +14,14 @@
 
 <script>
 import { mapState } from 'vuex';
-import HomePage from './components/HomePage.vue';
+import Navbar from './components/Navbar.vue';
+import Body from './components/Body.vue'
 import Loading from './components/Loading.vue';
 
 export default {
   components: {
-    HomePage,
+    Navbar,
+    Body,
     Loading
   },
   computed: mapState('loading',[
