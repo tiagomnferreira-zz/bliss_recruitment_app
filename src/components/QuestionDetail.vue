@@ -1,12 +1,16 @@
 <template>
     <div>
+        <b-button class="btn-back"  size="lg" variant="primary" to="/questions">Back</b-button>
         <b-card-group deck>
             <b-card :title="question.question"
             :sub-title="question.published_at">
-                <b-table striped :items="question.choices">
-                    <template slot="upvote" slot-scope="row">
-                        <b-button size="sm" class="mr-2">
-                            Teste
+                <b-table striped :items="question.choices" :fields="fields">
+                    <template slot="index" slot-scope="data">
+                        {{data.index + 1}}
+                    </template>
+                    <template slot="upvote" slot-scope="data">
+                        <b-button @click="updateQuestion(question.id, question.choices[data.index])" variant="success" size="sm" class="mr-2">
+                            Vote
                         </b-button>
                     </template>
                 </b-table>
@@ -16,7 +20,7 @@
                             img-alt="Card image"
                             img-bottom>
                         <p class="card-text">
-                            Image attached
+                            Question image
                         </p>
                     </b-card>
                 </div>
@@ -33,10 +37,23 @@ export default {
     props: [
         'id'
     ],
+    data() {
+        return {
+            fields: [ 'index','choice', 'votes', 'upvote' ]
+        }
+    },
     methods: {
         ...mapActions('details',[
-            'fetchOne'
-        ])
+            'fetchOne',
+            'upvote'
+        ]),
+        updateQuestion(id, value){
+            const body = {
+                id: this.id,
+                choice: value
+            }
+            this.upvote(body);
+        }
     },
     computed: mapState('details',[
         'question',
@@ -48,5 +65,7 @@ export default {
 </script>
 
 <style>
-
+    .btn-back{
+        margin-bottom: 2%;
+    }
 </style>

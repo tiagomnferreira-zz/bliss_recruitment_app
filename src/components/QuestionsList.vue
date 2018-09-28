@@ -20,10 +20,10 @@
         <br/>
         <b-card-group deck>
             <b-card header="<b>Questions list</b>">
-                <b-list-group class="question" v-for="question in questions">
-                    <b-list-group-item :to="'/questions/'+question.id">
-                        <b-badge variant="primary" pill>{{question.id}}</b-badge>
+                <b-list-group v-for="question in questions">
+                    <b-list-group-item class="d-flex justify-content-between align-items-center" id="question" :to="'/questions/'+question.id">
                         {{question.question }}
+                        <img :src="question.thumb_url"/>
                     </b-list-group-item>
                 </b-list-group>
             </b-card>
@@ -76,9 +76,13 @@ export default {
 </script>
 
 <style>
-
     .btn-results{
         margin-top: 5%;
         width: 100%;
+    }
+    img {
+        width: 10%;
+        height: 10%;
+        float: right;
     }
 </style>
