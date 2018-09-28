@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HomePage from './components/HomePage.vue'
 import QuestionsList from './components/QuestionsList.vue'
 import HealthStatus from './components/HealthStatus.vue'
+import QuestionDetail from './components/QuestionDetail.vue'
 
 Vue.use(Router)
 
@@ -17,6 +18,12 @@ export default new Router({
             path:'/questions',
             name: 'questions',
             component: QuestionsList
+        },
+        {
+            path: '/questions/:id',
+            name: 'detail',
+            component: QuestionDetail,
+            props: true
         },
         {
             path: '/status',
