@@ -2,7 +2,8 @@ const state = {
     questions: [],
     offset: 0,
     limit: 10,
-    message: 'Show More'
+    message: 'Show More',
+    sent: false
 };
 
 const getters = {
@@ -40,6 +41,22 @@ const actions = {
             }
         }
         context.commit('SEARCH', [result]);
+    },
+    share(context, data) {
+        fetch(`https://private-anon-b78216cfd4-blissrecruitmentapi.apiary-mock.com/share?destination_email=${data.email}`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data.questions)
+        })
+        .then(function(res){
+            return res.json();
+        })
+        .then(function(res){
+            context.commit('EMAIL_SENT')
+        })
+        
     }
 };
 
@@ -58,6 +75,9 @@ const mutations = {
     },
     CHANGE_MESSAGE(state){
         state.message = 'No more results';
+    },
+    EMAIL_SENT(state) {
+        state.sent = true;
     }
 };
 
