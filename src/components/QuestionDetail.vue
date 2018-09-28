@@ -1,6 +1,12 @@
 <template>
     <div>
-        <b-button class="btn-back"  size="lg" variant="primary" to="/questions">Back</b-button>
+        <div class="btn-group">
+            <b-button size="lg" variant="primary" to="/questions">Back</b-button>
+            <b-btn variant="success" size="lg" @click="modalShow = !modalShow">Share Screen</b-btn>
+            <b-modal v-model="modalShow" title="Share this page's content" ok-title="Send" @ok="sendEmail">
+                <b-form-input v-model="email" type="email" placeholder="Destination e-mail"></b-form-input>
+            </b-modal>
+        </div>
         <b-card-group deck>
             <b-card :title="question.question"
             :sub-title="question.published_at">
@@ -40,13 +46,16 @@ export default {
     data() {
         return {
             fields: [ 'index','choice', 'votes', 'upvote' ],
-            disabled: false
+            disabled: false,
+            email: '',
+            modalShow: false
         }
     },
     methods: {
         ...mapActions('details',[
             'fetchOne',
-            'upvote'
+            'upvote',
+            'share'
         ]),
         updateQuestion(id, value){
             this.disabled = !this.disabled;
@@ -55,6 +64,13 @@ export default {
                 choice: value
             }
             this.upvote(body);
+        },
+        sendEmail(){
+            const data = {
+                question : this.question,
+                email: this.email
+            }
+            this.share(data);
         }
     },
     computed: mapState('details',[
@@ -67,7 +83,9 @@ export default {
 </script>
 
 <style>
-    .btn-back{
+    .btn-group {
         margin-bottom: 2%;
+        display: inline;
     }
+    
 </style>

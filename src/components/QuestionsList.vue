@@ -1,7 +1,10 @@
 <template>
     <div>
         <div>
-            <label for="inputLive">Search:</label>
+            <b-btn class="btn-share" variant="success" size="lg" @click="modalShow = !modalShow">Share Screen</b-btn>
+            <b-modal v-model="modalShow" title="Share this page's content" ok-title="Send" @ok="sendEmail">
+                <b-form-input v-model="email" type="email" placeholder="Destination e-mail"></b-form-input>
+            </b-modal>
             <b-input-group>
                 <b-form-input
                     v-model.lazy="query"
@@ -46,14 +49,17 @@ export default {
     data() {
         return {
             query: '',
-            button: { variant: 'primary', size: 'lg' }
+            button: { variant: 'primary', size: 'lg' },
+            email: '',
+            modalShow: false
         }
     },
     methods: {
         ...mapActions('questions',[
             'fetchAll',
             'search',
-            'fetchMore'
+            'fetchMore',
+            'share'
         ]),
         onChange() {
             if(this.query === '') this.fetchAll();
@@ -62,6 +68,13 @@ export default {
         dismiss() {
             this.query = "";
             this.fetchAll();
+        },
+        sendEmail(){
+            const data = {
+                questions : this.questions,
+                email: this.email
+            }
+            this.share(data);
         }
     },
     computed: mapState('questions',[
@@ -84,5 +97,9 @@ export default {
         width: 10%;
         height: 10%;
         float: right;
+    }
+
+    .btn-share {
+        margin-bottom: 2%;
     }
 </style>

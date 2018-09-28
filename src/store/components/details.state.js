@@ -1,5 +1,6 @@
 const state = {
-    question: {}
+    question: {},
+    sent: false
 };
 
 const getters = {
@@ -37,12 +38,30 @@ const actions = {
                 body
             });
         })
+    },
+    share(context, data) {
+        fetch(`https://private-anon-b78216cfd4-blissrecruitmentapi.apiary-mock.com/share?destination_email=${data.email}`,{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data.question)
+        })
+        .then(function(res){
+            return res.json();
+        })
+        .then(function(res){
+            context.commit('EMAIL_SENT')
+        })     
     }
 };
 
 const mutations = {
     FETCH_ONE(state, question) {
         state.question = question;
+    },
+    EMAIL_SENT(state) {
+        state.sent = true;
     }
 };
 
