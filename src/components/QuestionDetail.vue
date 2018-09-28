@@ -9,7 +9,7 @@
                         {{data.index + 1}}
                     </template>
                     <template slot="upvote" slot-scope="data">
-                        <b-button @click="updateQuestion(question.id, question.choices[data.index])" variant="success" size="sm" class="mr-2">
+                        <b-button :disabled="!!disabled" @click="updateQuestion(question.id, question.choices[data.index])" variant="success" size="sm" class="mr-2">
                             Vote
                         </b-button>
                     </template>
@@ -39,7 +39,8 @@ export default {
     ],
     data() {
         return {
-            fields: [ 'index','choice', 'votes', 'upvote' ]
+            fields: [ 'index','choice', 'votes', 'upvote' ],
+            disabled: false
         }
     },
     methods: {
@@ -48,6 +49,7 @@ export default {
             'upvote'
         ]),
         updateQuestion(id, value){
+            this.disabled = !this.disabled;
             const body = {
                 id: this.id,
                 choice: value
