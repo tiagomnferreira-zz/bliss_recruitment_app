@@ -21,7 +21,7 @@
         <b-card-group deck>
             <b-card header="<b>Questions list</b>">
                 <b-list-group class="question" v-for="question in questions">
-                    <b-list-group-item to="/questions/details">
+                    <b-list-group-item :to="'/questions/'+question.id">
                         <b-badge variant="primary" pill>{{question.id}}</b-badge>
                         {{question.question }}
                     </b-list-group-item>
